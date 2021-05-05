@@ -1,28 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="jp" dir="ltr">
   <head>
-    <base target="_top">
-    <script src =" https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP LIFF</title>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      liff
+        .init({
+          liffId: '1655857005-yoge71eZ'
+        })
+        .then(() => {
+          document.getElementById('go').addEventListener('click', () => {
+
+            if (!liff.isInClient()) {
+                sendAlertIfNotInClient();
+            } else {
+                liff.sendMessages([{
+                    'type': 'text',
+                    'text': "Hello, World!"
+                }]).then(function() {
+                    window.alert('Message sent');
+                }).catch(function(error) {
+                    window.alert('Error sending message: ' + error);
+                });
+            }
+
+
+            /*if (!liff.isInClient()) {
+              document.getElementById('log').value += 'sendMessagesLocation ng\n';
+            } else {
+              liff.sendMessages([{
+                'type': 'location',
+                'title': document.getElementById('sendMessagesLocationTitle').value,
+                'address': document.getElementById('sendMessagesLocationAddress').value,
+                'latitude': document.getElementById('sendMessagesLocationLatitude').value,
+                'longitude': document.getElementById('sendMessagesLocationLongitude').value
+              }]).then(function() {
+                document.getElementById('log').value += 'sendMessagesLocation completed\n';
+              }).catch(function(error) {
+                document.getElementById('log').value += 'sendMessagesLocation()=' + error + '\n';
+              });
+            }
+          });*/
+        })
+        .catch((err) => {
+          document.getElementById('log').value = 'init ng\n' + err;
+        });
+    });
+    </script>
   </head>
   <body>
-    <h2>クリックしたらカウントアップ</h2>
-    <div id ="app"> 
-    <p> {{count}} 回 </p> 
-    <button v-on: click ="countUp"> カウント </button>
-
-    <script> 
-      new Vue({ 
-        el: "#app", 
-        data: { 
-        count: 0 
-        }, 
-        methods: { 
-          countUp: function() { 
-          this. count ++;
-
-          } 
-        } 
-      }) 
-    </script>
+    <div>
+      <h3>位置情報を送信する</h3>
+      <div>title<input type="text" id="sendMessagesLocationTitle" value="NY"/></div>
+      <div>address<input type="text" id="sendMessagesLocationAddress" value="〒150-0002 東京都渋谷区渋谷２丁目２１−１"/></div>
+      <div>latitude<input type="text" id="sendMessagesLocationLatitude" value="40.6971494"/></div>
+      <div>longitude<input type="text" id="sendMessagesLocationLongitude" value="-74.2598633"/></div>
+      <input type="button" id="go" value="実行"/>
+      <textarea id="log" style="width:96%;height:100px;"></textarea>
+    </div>
   </body>
 </html>
