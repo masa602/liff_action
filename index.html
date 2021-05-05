@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>位置情報</title>
-  </head>
-  <body>
-    <b><font size="6">位置情報を取得中・・・</font></b>
-    <!-- <button id="bt">get adress</button> -->
-    <script>
-      getAdress()
-      //document.getElementById('bt').onclick = getAdress;
-    
-      function getAdress() {
-        navigator.geolocation.getCurrentPosition(success);
-      }
+<head>
+<meta charset="utf-8">
+<script>
+  navigator.geolocation.getCurrentPosition(test2)
+/*function test() {
+    navigator.geolocation.getCurrentPosition(test2);
+}*/
 
-      function success(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        toGetLocation(latitude, longitude);
-      }
+function test2(position) {
 
-      function toGetLocation(latitude, longitude) {
-        google.script.run
-          .withFailureHandler(onFailure)
-          .withSuccessHandler(onSuccess)
-          .getLocation(latitude, longitude);
-      }
+    var geo_text = "緯度:" + position.coords.latitude + "\n";
+    geo_text += "経度:" + position.coords.longitude + "\n";
+    geo_text += "高度:" + position.coords.altitude + "\n";
+    geo_text += "位置精度:" + position.coords.accuracy + "\n";
+    geo_text += "高度精度:" + position.coords.altitudeAccuracy  + "\n";
+    geo_text += "移動方向:" + position.coords.heading + "\n";
+    geo_text += "速度:" + position.coords.speed + "\n";
 
-      function onSuccess(geocode) {
-        alert(geocode['results'][0]['formatted_address']);//geocodeの中から住所を取得する
-      }
+    var date = new Date(position.timestamp);
 
-      function onFailure(e) {
-        alert([e.message, e.stack]);
-      }
-    </script>
-  </body>
+    geo_text += "取得時刻:" + date.toLocaleString() + "\n";
+
+    alert(geo_text);
+
+}
+</script>
+</head>
+<body>
+
+<!-- <button onclick="test()">test</button> -->
+
+</body>
 </html>
