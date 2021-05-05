@@ -1,40 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="jp" dir="ltr">
   <head>
-    <meta charset="UTF-8">
-    <title>位置情報</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP LIFF</title>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      liff
+        .init({
+          liffId: '<LIFF_ID>'
+        })
+        .then(() => {
+          document.getElementById('go').addEventListener('click', () => {
+            document.getElementById('log').value =
+              '○言語設定\n' +
+              'liff.getLanguage()=' + liff.getLanguage() + '\n' +
+              '○LIFF SDKのバージョン\n' +
+              'liff.getVersion()=' + liff.getVersion() + '\n' +
+              '○LINE内ブラウザで動作させているかどうか\n' +
+              'liff.isInClient()=' + liff.isInClient() + '\n' +
+              '○ログインしているかどうか\n' +
+              'liff.isLoggedIn()=' + liff.isLoggedIn() + '\n' +
+              '○OS\n' +
+              'liff.getOS()=' + liff.getOS() + '\n' +
+              '○アクセストークン\n' +
+              'liff.getAccessToken()=' + liff.getAccessToken() + '\n' +
+              '○画面（1対1のチャット、グループ、またはトークルーム）を一意に識別する値\n' +
+              'liff.getContext()=' + JSON.stringify(liff.getContext()) + '\n' +
+              '○ユーザー名等\n' +
+              'liff.getDecodedIDToken()=' + JSON.stringify(liff.getDecodedIDToken()) + '\n';
+          });
+        })
+        .catch((err) => {
+          document.getElementById('log').value = 'init ng\n' + err;
+        });
+    });
+    </script>
   </head>
   <body>
-    <b><font size="6">位置情報を取得中・・・</font></b>
-    <!-- <button id="bt">get adress</button> -->
-    <script>
-      getAdress()
-      //document.getElementById('bt').onclick = getAdress;
-    
-      function getAdress() {
-        navigator.geolocation.getCurrentPosition(success);
-      }
-
-      function success(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        toGetLocation(latitude, longitude);
-      }
-
-      function toGetLocation(latitude, longitude) {
-        google.script.run
-          .withFailureHandler(onFailure)
-          .withSuccessHandler(onSuccess)
-          .getLocation(latitude, longitude);
-      }
-
-      function onSuccess(geocode) {
-        alert(geocode['results'][0]['formatted_address']);//geocodeの中から住所を取得する
-      }
-
-      function onFailure(e) {
-        alert([e.message, e.stack]);
-      }
-    </script>
+    <div>
+      <h3>環境やトークルームの情報を取得</h3>
+      <input type="button" id="go" value="実行"/>
+      <textarea id="log" style="width:96%;height:350px;"></textarea>
+    </div>
   </body>
 </html>
